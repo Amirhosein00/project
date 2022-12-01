@@ -3,7 +3,10 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var routes = require('routes')
+var routes = require('./routes');
+const mongoose = require('mongoose')
+mongoose.connect('mongodb+srv://amir:hossein123@amirproject.6whiqye.mongodb.net/default_db?retryWrites=true&w=majority');
+
 
 var app = express();
 
