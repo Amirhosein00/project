@@ -4,12 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var routes = require('./routes');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+var cors = require('cors')
 mongoose.connect('mongodb+srv://amir:hossein123@amirproject.6whiqye.mongodb.net/default_db?retryWrites=true&w=majority');
 
 
 var app = express();
 
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
