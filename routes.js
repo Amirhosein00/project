@@ -96,7 +96,39 @@ router.post('/admins/login', (req, res) => {
     })
 })
 
+router.get('/users', (req, res) => {
+    users.find({}, (err, list) => {
+        if (err) throw err
+        res.json(list)
+    })
+})
 
+router.get('/admins', (req, res) => {
+    admins.find({}, (err, list) => {
+        if (err) throw err
+        res.json(list)
+    })
+})
+
+router.delete('/users/:id', (req, res) => {
+    const id = req.params.id
+    users.findByIdAndRemove(id, (err) => {
+        if (err) throw err
+        res.json({
+            status: true
+        })
+    })
+})
+
+router.delete('/admins/:id', (req, res) => {
+    const id = req.params.id
+    admins.findByIdAndRemove(id, (err) => {
+        if (err) throw err
+        res.json({
+            status: true
+        })
+    })
+})
 
 
 module.exports = router
