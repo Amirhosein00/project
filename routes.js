@@ -3,7 +3,47 @@ const products = require("./models/product")
 const admins = require("./models/admin")
 const users = require("./models/user")
 const cart = require("./models/cart")
+const AWS = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
 const router = express.Router()
+
+const config = {
+    endpoint: "storage.iran.liara.space",
+    accessKeyId: "eqss15b29kui5k3e",
+    secretAccessKey: "fe0840e4-7132-4b1d-8f31-86ac500e8e0e",
+    region: "default",
+};
+
+const s3 = new AWS.S3(config);
+
+const upload = multer({
+    storage: multerS3({
+        s3,
+        bucket: "shoping-cart",
+        key: function (req, file, cb) {
+            console.log(file);
+            cb(null, "avnlkhdtbgaksjfnglvbhalgcje_"+file.originalname);
+        },
+    }),
+});
+
+router.post('/products', upload.single('img'), async (req, res) => {
+    let {name, detail, price, category} = req.body
+    let p = new products({
+        "title": name,
+        "price": price,
+        "description": detail,
+        "category": category,
+        "image":req.file.location,
+        "rating":{
+            "rate":0,
+            "count":0
+        }
+    })
+    await p.save()
+    res.json(p)
+})
 
 router.get('/products', (req, res) => {
     products.find({}, (err, docs) => {
